@@ -146,6 +146,39 @@ Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handlin
   ```
 
 
+### Extracting SQL databases [SQLite](https://www.sqlite.org/about.html) or [SQL Alchemy](https://www.sqlalchemy.org/)
+Open the Jupyter Notebook ***./extract/extract_SQL.ipynb*** for SQL handling.
+- Connect to SQLite3 Database via
+  ```
+  import sqlite3
+  import pandas as pd
+
+  # connect to the database
+  conn = sqlite3.connect('population_data.db')
+
+  # run a query
+  pd.read_sql('SELECT * FROM population_data', conn)
+  ```
+
+- Connect to SQLAlchemy via
+  ```
+  import pandas as pd
+  from sqlalchemy import create_engine
+
+  ### 
+  # create a database engine
+  # to find the correct file path, use the python os library:
+  # import os
+  # print(os.getcwd())
+  #
+  ###
+
+  engine = create_engine('sqlite:////home/workspace/3_sql_exercise/population_data.db')
+  pd.read_sql("SELECT * FROM population_data", engine)
+  ```
+  Check the note book for further queries.
+
+
 
 
 
