@@ -51,6 +51,37 @@ The data comes from two sources:
 - Data from the web can often be extracted by using an API (Application Programming Interface).
 - APIs generally provide data in either JSON or XML format.
 
+### Extracting CSV data
+Open the Jupyter Notebook ***./extract_csv/extract_CSV.ipynb*** for csv handling.
+Read csv tricks:
+- read_csv simple:
+  ```
+  import pandas as pd
+  df_projects = pd.read_csv('projects_data.csv')
+  ```
+- In case of DType warning (Pandas could not automatically figure out the data type for each column (ie integer, string, etc.) use ```dtype=str```
+
+  ```
+  df_projects = pd.read_csv('projects_data.csv', dtype=str)
+  ```
+
+- In case of ```ParserError: Error tokenizing data```:
+  ```
+  f = open('population_data.csv')
+  for i in range(10):
+      line = f.readline()
+      print('line: ', i,  line)
+  f.close()
+  ```
+  - Read data line by line
+  - use skiprow to overcome header problems in csv
+
+  ```
+  df_population = pd.read_csv('population_data.csv', skiprows=4)
+  ```
+
+
+  
 
 ## Setup Instructions
 
