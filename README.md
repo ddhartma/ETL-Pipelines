@@ -51,8 +51,8 @@ The data comes from two sources:
 - Data from the web can often be extracted by using an API (Application Programming Interface).
 - APIs generally provide data in either JSON or XML format.
 
-### Extracting CSV data
-Open the Jupyter Notebook ***./extract_csv/extract_CSV.ipynb*** for csv handling.
+### [Extracting CSV data](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html)
+Open the Jupyter Notebook ***./extract/extract_CSV.ipynb*** for csv handling.
 Read csv tricks:
 - read_csv simple:
   ```
@@ -81,7 +81,78 @@ Read csv tricks:
   ```
 
 
-  
+### [Extracting JSON data](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html)
+Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for JSON handling.
+Read JSON tricks:
+- read JSON lines:
+  ```
+  def print_lines(n, file_name):
+    f = open(file_name)
+    for i in range(n):
+        print(f.readline())
+    f.close()
+
+  print_lines(1, 'population_data.json')
+  ```
+- read JSON via pandas.read_json()
+  ```
+  df_json = pd.read_json('population_data.json', orient='records')
+  ```
+- read JSON via JSON library
+  ```
+  import json
+  with open('population_data.json') as f:
+      json_data = json.load(f)
+  ```
+
+### [Extracting XML data](https://www.crummy.com/software/BeautifulSoup/)
+Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handling.
+- Use BeautifulSoup
+  ```
+  # import the BeautifulSoup library
+  from bs4 import BeautifulSoup
+
+  # open the population_data.xml file and load into Beautiful Soup
+  with open("population_data.xml") as fp:
+      soup = BeautifulSoup(fp, "lxml") # lxml is the Parser type
+  ```
+  ```
+  # output the first 5 records in the xml file
+  # this is an example of how to navigate the XML document with BeautifulSoup
+
+  i = 0
+  # use the find_all method to get all record tags in the document
+  for record in soup.find_all('record'):
+      # use the find_all method to get all fields in each record
+      i += 1
+      for record in record.find_all('field'):
+          print(record['name'], ': ' , record.text)
+      print()
+      if i == 5:
+          break
+  ```
+
+- Convert XML to DataFrame (via dictionary)
+  ```
+  data_dictionary = {'Country or Area':[], 'Year':[], 'Item':[], 'Value':[]}
+
+  for record in soup.find_all('record'):
+      for record in record.find_all('field'):
+          data_dictionary[record['name']].append(record.text)
+
+  df = pd.DataFrame.from_dict(data_dictionary)
+  df = df.pivot(index='Country or Area', columns='Year', values='Value')
+  df.reset_index(level=0, inplace=True)
+  ```
+
+
+
+
+
+
+
+
+
 
 ## Setup Instructions
 
