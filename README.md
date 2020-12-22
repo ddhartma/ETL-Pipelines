@@ -39,7 +39,7 @@ The data comes from two sources:
 - [World Bank Indicator Data](https://data.worldbank.org/indicator) - This data contains socio-economic indicators for countries around the world. A few example indicators include population, arable land, and central government debt.
 - [World Bank Project Data](https://datacatalog.worldbank.org/dataset/world-bank-projects-operations) - This data set contains information about World Bank project lending since 1947.
 
-## Extract
+## Extract Data
 #### Typical formats
 - ***CSV***: CSV stands for comma-separated values. These types of files separate values with a comma, and each entry is on a separate line. Oftentimes, the first entry will contain variable names.
 - ***JSON***: JSON is a file format with key/value pairs. It looks like a Python dictionary.
@@ -205,9 +205,59 @@ In general, you access APIs via the web using a web address. Within the web addr
   ```
 
 
+## Transform Data
+- Data scientists claim that they spend 80% of their time transforming data.
+- Data Transformation means:
+  - Combining & cleaning data
+  - Working with encodings
+  - Removing dublicate rows
+  - Dummy variables
+  - Removing outliers
+  - Normalizing data
+  - Engineer new features
 
+### Combinig data from different datasets
+e.g. you have top combine data from a JSON file with data from a CSV file
+Open the Jupyter Notebook ***./transform/transform_comnbine.ipynb*** for DataFrame Combinations.
 
+- Use the [concat](https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html) method to add df_electricity at the end of df_rural
+- Only possible if both DataFrames have the same column structure
+  ```
+  df = pd.concat([df_rural, df_electricity])
+  ```
 
+- Use the [melt](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html) method to unpivot a DataFrame from wide to long format, optionally leaving identifiers set.
+  ```
+  df_rural_melt = pd.melt(df_rural, id_vars=['Country Name', 'Country Code', 'Indicator Name', 'Indicator Code'],\
+                  var_name = 'Year', value_name='Rural_Value')
+  ```
+- Use the [merge](https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.merge.html) method to join DataFrames
+  ```
+  df_merge = df_rural_melt.merge(df_electricity_melt, how='outer', on=['Country Name', 'Country Code', 'Year'])
+  ```
+
+### Cleaning data
+- Dirty data tends to come from a number of sources including:
+  - missing values
+  - data entry mistakes
+  - dublicate data
+  - incomplete records
+  - inconsistencies between different datasets
+  - incorrect encodings
+
+Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cleaning.
+- Drop duplicates via pandas [drop_dublicates](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html) method
+  ```
+  df_indicator[['Country Name', 'Country Code']].drop_duplicates()
+  ```
+- Get unique column enntries of DataFrame via pandas [unique](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.unique.html) method
+  ```
+  df_projects['countryname'].unique()
+  ```
+- Apply a lambda function to all rows of one column for cleaning
+  ```
+  df_projects['Official Country Name'] = df_projects['countryname'].apply(lambda x : x.split(';')[0])
+  ```
 
 
 ## Setup Instructions
