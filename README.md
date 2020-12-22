@@ -165,7 +165,7 @@ Open the Jupyter Notebook ***./extract/extract_SQL.ipynb*** for SQL handling.
   import pandas as pd
   from sqlalchemy import create_engine
 
-  ### 
+  ###
   # create a database engine
   # to find the correct file path, use the python os library:
   # import os
@@ -178,8 +178,31 @@ Open the Jupyter Notebook ***./extract/extract_SQL.ipynb*** for SQL handling.
   ```
   Check the note book for further queries.
 
+### Extracting data via APIs
+Open the Jupyter Notebook ***./extract/extract_API.ipynb*** for API handling.
+- An API allows one to execute code on the (World Bank) server without getting direct access.
+In general, you access APIs via the web using a web address. Within the web address, you specify the data that you want. To know how to format the web address, you need to read an API's documentation. Some APIs also require that you send login credentials as part of your request. The World Bank APIs are public and do not require login credentials.
 
+  ```
+  http://api.worldbank.org/v2/countries/ + list of country abbreviations separated by ; + /indicators/ + indicator name + ? + options
+  ```
+  where options can include
+    - per_page - number of records to return per page
+    - page - which page to return - eg if there are 5000 records and 100 records per page
+    - date - filter by dates
+    - format - json or xml
 
+    and a few other options that you can read about [here](https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structure).
+
+- The Python requests library makes working with APIs relatively simple.
+  ```
+  import requests
+  import pandas as pd
+
+  url = 'http://api.worldbank.org/v2/countries/br;cn;us;de/indicators/SP.POP.TOTL/?format=json&per_page=1000'
+  r = requests.get(url)
+  r.json()
+  ```
 
 
 
