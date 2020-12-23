@@ -254,11 +254,50 @@ Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cl
   ```
   df_projects['countryname'].unique()
   ```
-- Apply a lambda function to all rows of one column for cleaning
+- Apply a lambda function to all rows of one column for cleaning, e.g.
+
+  split column values:
   ```
   df_projects['Official Country Name'] = df_projects['countryname'].apply(lambda x : x.split(';')[0])
   ```
 
+  replace colume values:
+  ```
+  df_projects['totalamt'] = df_projects['totalamt'].apply(lambda x : x.replace(',', ''))
+  ```
+
+
+### Datatypes
+Open the Jupyter Notebook ***./transform/transform_datatypes.ipynb*** for handling datatypes.
+- When reading in a data set, pandas will try to guess the data type of each column like float, integer, datettime, bool, etc. In Pandas, strings are called "object" dtypes. However, Pandas does not always get this right.
+- With messy data, you might find it easier to read in everything as a string; however, you'll sometimes have to convert those strings to more appropriate data types. When you output the dtypes of a dataframe, you'll generally see these values in the results:
+  - float64
+  - int64
+  - bool
+  - datetime64
+  - timedelta
+  - object
+
+
+- To get the datatypes of each column use
+  ```
+  df_projects.dtypes
+  ```
+
+- Conversion to string during reading
+  ```
+  df_projects = pd.read_csv('../data/projects_data.csv', dtype=str)
+  ```
+
+- Conversion to numeric values
+  ```
+  df_projects['totalamt'] = pd.to_numeric(df_projects['totalamt'])
+  ```
+- Important datatype converion methods
+  - [astype](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.astype.html#pandas.DataFrame.astype)
+  - [to_datetime](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_datetime.html#pandas.to_datetime)
+  - [to_numeric](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_numeric.html#pandas.to_numeric)
+  - [to_timedelta](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_timedelta.html#pandas.to_timedelta)
 
 ## Setup Instructions
 
@@ -291,10 +330,10 @@ $ git clone https://github.com/ddhartma/Data-Science-Web-Development.git
 
 - Change Directory
 ```
-$ cd 3_Flask
+$ cd 5_ETL_DATA_Pipelines
 ```
 
-- Create a new Python environment, e.g. ds_dashboard. Inside Git Bash (Terminal) write:
+- Create a new Python environment, e.g. ds_etl. Inside Git Bash (Terminal) write:
 ```
 $ conda create --name ds_dashboard
 ```
