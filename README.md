@@ -237,6 +237,8 @@ Open the Jupyter Notebook ***./transform/transform_comnbine.ipynb*** for DataFra
   ```
 
 ### Cleaning data
+Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cleaning.
+
 - Dirty data tends to come from a number of sources including:
   - missing values
   - data entry mistakes
@@ -245,7 +247,7 @@ Open the Jupyter Notebook ***./transform/transform_comnbine.ipynb*** for DataFra
   - inconsistencies between different datasets
   - incorrect encodings
 
-Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cleaning.
+
 - Drop duplicates via pandas [drop_dublicates](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html) method
   ```
   df_indicator[['Country Name', 'Country Code']].drop_duplicates()
@@ -298,6 +300,48 @@ Open the Jupyter Notebook ***./transform/transform_datatypes.ipynb*** for handli
   - [to_datetime](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_datetime.html#pandas.to_datetime)
   - [to_numeric](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_numeric.html#pandas.to_numeric)
   - [to_timedelta](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_timedelta.html#pandas.to_timedelta)
+
+### Parsing Dates
+Open the Jupyter Notebook ***./transform/transform_parsing_dates.ipynb*** for parsing dates.
+- Another common data transformation involves parsing dates. Parsing generally means that you start with a string and then transform that string into a different data type. In this case, that means taking a date in the format of a string and transforming the string into a date type.
+  ```
+  import pandas as pd
+  parsed_date = pd.to_datetime('January 1st, 2017')
+  ```
+
+  In order to parse it use:
+  ```
+  parsed_date.month
+  parsed_date.year
+  parsed_date.second
+  ```
+
+- Sometimes date string are formatted in unexpected ways. For example, in the United States, dates are given with the month first and then the day. That is what pandas expects by default. However, some countries write the date with the day first and then the month.
+  ```
+  parsed_date = pd.to_datetime('5/3/2017 5:30')
+  parsed_date.month
+
+  parsed_date = pd.to_datetime('3/5/2017 5:30', format='%d/%m/%Y %H:%M')
+  parsed_date.month
+
+  parsed_date = pd.to_datetime('5/3/2017 5:30', format='%m/%d/%Y %H:%M')
+  parsed_date.month
+  ```
+
+- Order to parse a whole DataFrame column use e.g.
+  ```
+  df_projects['boardapprovaldate'] = pd.to_datetime(df_projects['boardapprovaldate'], format="%Y-%m-%dT%H:%M:%SZ")
+  df_projects['boardapprovaldate'].dt.year
+  df_projects['boardapprovaldate'].dt.month
+  df_projects['boardapprovaldate'].dt.day
+  df_projects['boardapprovaldate'].dt.weekday
+  df_projects['boardapprovaldate'].dt.hour
+  df_projects['boardapprovaldate'].dt.minute
+  df_projects['boardapprovaldate'].dt.second
+  ```
+
+- Check this link for [Python's strftime directives](https://strftime.org/)
+
 
 ## Setup Instructions
 
