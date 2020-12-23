@@ -365,6 +365,39 @@ The problem is that it's difficult to know what encoding rules were used to make
   df = pd.read_csv('../data/population_data.csv', skiprows=4, encoding=encoding['encoding'])
   ```
 
+### Missing values
+In most cases a machine learning algorithm won't work with missing values.
+
+Common methods to handle missing values
+  1. Deleting entire rows
+  2. Imputing values by mean substitution
+    Here are some links
+    - [groupby](https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.groupby.html)
+    - [transform](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.transform.html)
+    - [fillna](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.fillna.html)
+    ```
+    df_melt['GDP_filled'] = df_melt.groupby('Country Name')['GDP'].transform(lambda x: x.fillna(x.mean()))
+    ```
+
+  3. Imputing values by mode substitution
+
+  4. Imputing values by median substitution
+
+  5. Imputing values by [Forward Fill](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.fillna.html) (time series data), use neighboring cells to fill in the data.
+
+  The pandas fillna method has a forward fill option. For example, if you wanted to use forward fill on the GDP dataset, you could execute ```df_melt['GDP'].fillna(method='ffill')```. However, there are two issues with that code.
+
+    - You want to first make sure the data is sorted by year
+    - You need to group the data by country name so that the forward fill stays within each country
+
+  ```
+  df_melt['GDP_ffill'] = df_melt.sort_values('year').groupby('Country Name')['GDP'].fillna(method='ffill')
+  ```
+  6. Imputing values by [Backward Fill](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.fillna.html) (time series data), use neighboring cells to fill in the data
+  ```
+  df_melt['GDP_bfill'] = df_melt.sort_values('year').groupby('Country Name')['GDP'].fillna(method='bfill')
+  ```
+
 
 ## Setup Instructions
 
