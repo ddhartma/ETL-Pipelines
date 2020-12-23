@@ -343,6 +343,29 @@ Open the Jupyter Notebook ***./transform/transform_parsing_dates.ipynb*** for pa
 - Check this link for [Python's strftime directives](https://strftime.org/)
 
 
+### Matching Encodings
+Open the Jupyter Notebook ***./transform/transform_encodings.ipynb*** for handling encodings.
+- Encodings are a set of rules mapping string characters to their binary representations. Python supports dozens of different encoding as seen here in this [link](https://docs.python.org/3/library/codecs.html#standard-encodings). Because the web was originally in English, the first encoding rules mapped binary code to the English alphabet.
+The English alphabet has only 26 letters. But other languages have many more characters including accents, tildes and umlauts. As time went on, more encodings were invented to deal with languages other than English. The utf-8 standard tries to provide a single encoding schema that can encompass all text.
+The problem is that it's difficult to know what encoding rules were used to make a file unless somebody tells you. The most common encoding by far is utf-8. Pandas will assume that files are utf-8 when you read them in or write them out.
+
+- Use chardet for autodetection of encodings
+  ```
+  !pip install chardet
+
+  # import the chardet library
+  import chardet
+
+  # use the detect method to find the encoding
+  # 'rb' means read in the file as binary
+  with open('../data/population_data.csv', 'rb') as file:
+      print(chardet.detect(file.read()))
+      encoding = chardet.detect(file.read())
+
+  df = pd.read_csv('../data/population_data.csv', skiprows=4, encoding=encoding['encoding'])
+  ```
+
+
 ## Setup Instructions
 
 The following is a brief set of instructions on setting up a cloned repository.
