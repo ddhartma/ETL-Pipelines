@@ -366,6 +366,7 @@ The problem is that it's difficult to know what encoding rules were used to make
   ```
 
 ### Missing values
+Open the Jupyter Notebook ***./transform/transform_imputations.ipynb*** for handling missing values.
 In most cases a machine learning algorithm won't work with missing values.
 
 Common methods to handle missing values
@@ -398,7 +399,18 @@ Common methods to handle missing values
   df_melt['GDP_bfill'] = df_melt.sort_values('year').groupby('Country Name')['GDP'].fillna(method='bfill')
   ```
 
-
+### Data Dublicates
+Open the Jupyter Notebook ***./transform/transform_dublicates.ipynb*** for handling dublicate values.
+- A data set might have duplicate data: in other words, the same record is represented multiple times. Sometimes, it's easy to find and eliminate duplicate data like when two records are exactly the same. At other times, duplicate data is hard to spot.
+- Drop duplicates via pandas [drop_dublicates](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html) method
+  ```
+  df_indicator[['Country Name', 'Country Code']].drop_duplicates()
+  ```
+- Sometimes you have to look for certain strings in order to find dublicates, so use ```str.contains```
+  ```
+  projects[projects['countryname'].str.contains('Yugoslavia')]
+  ```
+  
 ## Setup Instructions
 
 The following is a brief set of instructions on setting up a cloned repository.
