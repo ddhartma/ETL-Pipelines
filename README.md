@@ -267,6 +267,10 @@ Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cl
   ```
   df_projects['totalamt'] = df_projects['totalamt'].apply(lambda x : x.replace(',', ''))
   ```
+  or simply
+  ```
+  df_projects['totalamt'] = df_projects['totalamt'].replace(',', '')
+  ```
 
 
 ### Datatypes
@@ -410,7 +414,25 @@ Open the Jupyter Notebook ***./transform/transform_dublicates.ipynb*** for handl
   ```
   projects[projects['countryname'].str.contains('Yugoslavia')]
   ```
-  
+
+### Dummy Variables
+Open the Jupyter Notebook ***./transform/transform_dummy.ipynb*** for creating dummy variables.
+- Dummy variables are often needed for categorical columns in order to make predictions via Linear Regression. The reasoning behind these transformations is that machine learning algorithms read in numbers not text. Text needs to be converted into numbers. If you have five categories, you only really need four features. For example, if the categories are "agriculture", "banking", "retail", "roads", and "government", then you only need four of those five categories for dummy variables. This topic is somewhat outside the scope of a data engineer.
+In some cases, you don't necessarily need to remove one of the features. It will depend on your application. In regression models, which use linear combinations of features, removing a dummy variable is important. For a decision tree, removing one of the variables is not needed.
+- Often dummy variables are one hot vectors of ```length = number of categrocal vars - 1```
+- Pandas makes it relatively easy to create dummy variables; however, oftentimes you'll need to clean the data first. Use ```replace``` strings in columns or ```split``` to remove certain substrings from column-row. Create dummies for categorical subset. Add numerical columns via ```concat``` method for example.
+
+- Easy method in pandas [get_dummies](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.get_dummies.html)
+  ```
+  dummies = pd.DataFrame(pd.get_dummies(sector['sector1']))
+  ```
+- To reduce dimension of categorical subset it might be useful to combine a few of them together. For example, in the dataset there are various categories with the term "Energy". And then there are other categories that seem related to energy but don't have the word energy in them like "Thermal" and "Hydro". Some categories have the term "Renewable Energy", depending on your questions you might want to combine these sets to one category.
+  ```
+  sector.loc[sector['sector1_aggregates'].str.contains('Energy', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Energy'
+  sector.loc[sector['sector1_aggregates'].str.contains('Transportation', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Transportation'
+  ```
+
+
 ## Setup Instructions
 
 The following is a brief set of instructions on setting up a cloned repository.
