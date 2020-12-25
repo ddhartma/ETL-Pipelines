@@ -623,6 +623,7 @@ Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling
         return normalized
   ```
 
+
 ### Feature engineering
 Open the Jupyter Notebook ***./transform/transform_feature_engineering.ipynb*** for handling scaling.
 - Engineering new features from dataset via
@@ -634,9 +635,78 @@ Open the Jupyter Notebook ***./transform/transform_feature_engineering.ipynb*** 
 
 - This is especially useful, when the model is underfitting
 
+## Load
+Open the Jupyter Notebook ***./load/load.ipynb*** for handling loading.
+- After Transformation of data, data needs to be stored. There are many options one can choose from. Which to choose depends on the needs.
+  - structural data -- a relational database like SQL might be good
+  - if data fits already in a pandas dataframe -- CSV file
+
+- Beyond SQL and CSV
+  - [ranking of database engines](https://db-engines.com/en/ranking)
+  - [Redis](https://redis.io/)
+  - [Cassandra](cassandra.apache.org/)
+  - [Hbase](hbase.apache.org/)
+  - [MongoDB](https://www.mongodb.com/)
+
+- Save to ***JSON***
+  ```
+  # use orient='records' to get one of the more common json formats
+  df_merged.to_json('countrydata.json', orient='records')
+  ```
+- Save to ***CSV***
+  ```
+  df_merged.to_csv('countrydata.csv', index=False)
+  ```
+
+- Save to ***SQL***
+  ```
+  df_merged.to_sql('merged', con = conn, if_exists='replace', index=False)
+  ```
+
+- Some SQL coding (check the notebook for more info)
+  ```
+  # connect to the data base
+  conn = sqlite3.connect('worldbank.db')
+
+  # get a cursor
+  cur = conn.cursor()
+
+  # drop the test table in case it already exists
+  cur.execute("DROP TABLE IF EXISTS test")
+
+  # create the test table including project_id as a primary key
+  cur.execute("CREATE TABLE test (project_id TEXT PRIMARY KEY, countryname TEXT, countrycode TEXT, totalamt REAL, year INTEGER);")
+
+  # insert a value into the test table
+  cur.execute("INSERT INTO test (project_id, countryname, countrycode, totalamt, year) VALUES ('a', 'Brazil', 'BRA', '100,000', 1970);")
+
+  # commit changes made to the database
+  conn.commit()
+
+  # select all from the test table
+  cur.execute("SELECT * FROM test")
+  cur.fetchall
+
+  # commit any changes and close the data base
+  conn.close()
+  ```
+
+- To insert values into SQL table
+  ```
+  # Insert gdp values into the gdp table
+  for index, values in df_indicator[['countryname', 'countrycode', 'year', 'gdp']].iterrows():
+      countryname, countrycode, year, gdp = values
+
+      sql_string = 'INSERT INTO gdp (countryname, countrycode, year, gdp) VALUES ("{}", "{}", {}, {});'.format(countryname, countrycode, year, gdp)
+      cur.execute(sql_string)
+
+  conn.commit()
+  ```
+
+
 
 ## Setup Instructions
-
+Open the Jupyter Notebook ***./load/load_data.ipynb*** for handling loading.
 The following is a brief set of instructions on setting up a cloned repository.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
