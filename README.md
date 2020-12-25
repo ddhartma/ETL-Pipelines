@@ -703,6 +703,8 @@ Open the Jupyter Notebook ***./load/load.ipynb*** for handling loading.
   conn.commit()
   ```
 
+## Putting it all together
+Open the Jupyter Notebook ***./load/putting_all_together.ipynb*** to see a complete ETL workflow.
 
 
 ## Setup Instructions
