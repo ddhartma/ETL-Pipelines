@@ -1,3 +1,5 @@
+[image1]: normalize_data.png "normalize_data"
+[image2]: standardize_data.png "standardize_data"
 # ETL Pipelines
 Data comes in all shapes, formats and sizes. It's a data engineers job to make sure that all of this information is accessible and ready for analysis. One of the major responibilities of a data engineer is called ***pipelining***.
 ## Introduction
@@ -501,6 +503,136 @@ Open the Jupyter Notebook ***./transform/transform_outliers_part_2.ipynb*** for 
   list(set(population_outliers['Country Name']) - set(gdp_outliers['Country Name']))
   ```
 
+### Scaling
+Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling scaling.
+
+- Numerical data comes in all different distribution patterns and ranges. However, some machine learning algorithms work better when all of the features are within a similar numerical range. Examples:
+  - Principal component analysis (PCA)
+  - Linear Regression with Gradient Descent
+  - Any algorithm that calculates Euclidian distance between points
+
+- Changing the numerical range of data is called Normalization or Feature Scaling.
+- Two common ways to scale features are called
+  - ***Rescaling/Normalization*** (scale features to numerical range between 0 and 1.0), distribution of data is the same but range changes
+
+    ![image1]
+
+  - ***Standardization*** (scale features that they have a mean of zero and standard deviation of 1), distribution of data is the same but range changes
+
+    ![image2]
+
+  Get min and max of an array
+  ```
+  def x_min_max(data):
+        """ Get min and max of an array
+
+            INPUT:
+            ------------
+            data - an array of data as an input
+
+            OUTPUT:
+            ------------
+            minimum - minimum  of that array
+            maximum - maximum  of that array
+        """
+        minimum = min(data)
+        maximum = max(data)
+        return minimum, maximum
+  ```
+
+  Normalize data
+  ```
+  def normalize(x, x_min, x_max):
+    """ function that normalizes a data point
+
+        INPUT:
+        ------------
+        x - is a single value
+        x_min - minimum  of x ranged dataset
+        x_max - maximum  of x ranged dataset
+
+        OUTPUT:
+        ------------
+        x_normalized - the normalized (rescaled) value (range between 0 ...1.0)
+    """
+    x_normalized = (x - x_min) / (x_max - x_min)
+    return x_normalized
+  ```
+
+  Normalization class
+  ```
+  class Normalizer():
+    """ normalizer class receives a dataframe as its only input for initialization"""
+
+    def __init__(self, dataframe):
+        """ Get min and max of ech column array
+
+            INPUT:
+            ------------
+            dataframe - the dataframe to focus on
+
+            OUTPUT:
+            ------------
+            self.params - calculating the min and max for each column,
+                        - append the results to the params attribute list            
+        """
+
+        self.params = []
+
+        for column in dataframe.columns:
+            self.params.append(x_min_max(dataframe[column]))
+
+    def x_min_max(self, data):
+        """ Get min and max of an array
+
+            INPUT:
+            ------------
+            data - an array of data as an input
+
+            OUTPUT:
+            ------------
+            minimum - minimum  of that array
+            maximum - maximum  of that array
+        """
+        minimum = min(data)
+        maximum = max(data)
+        return minimum, maximum
+
+    def normalize_data(self, x):
+        """ function that receives a data point as an input and then outputs the normalized version
+
+            INPUT:
+            ------------
+            x - a data point
+
+            OUTPUT:
+            ------------
+            normalized - a list containing normalized values of x
+        """
+
+        # Assume that the columns in the dataframe used to initialize an object are in the same
+        # order as this data point x
+        # You'll need to iterate through the individual values in the x variable        
+        # Use the params attribute where the min and max values are stored
+        normalized = []
+        for i, value in enumerate(x):
+            # get min and max for each column
+            x_max = self.params[i][1]
+            x_min = self.params[i][0]
+            normalized.append((x[i] - x_min) / (x_max - x_min))
+        return normalized
+  ```
+
+### Feature engineering
+Open the Jupyter Notebook ***./transform/transform_feature_engineering.ipynb*** for handling scaling.
+- Engineering new features from dataset via
+  - creating categorical variables from numerical variables
+  - multiplying features together
+  - ratios
+  - polynomial of a feature
+  - gathering more data
+
+- This is especially useful, when the model is underfitting
 
 
 ## Setup Instructions
