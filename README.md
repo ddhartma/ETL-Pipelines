@@ -432,6 +432,76 @@ In some cases, you don't necessarily need to remove one of the features. It will
   sector.loc[sector['sector1_aggregates'].str.contains('Transportation', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Transportation'
   ```
 
+### Outliers
+Open the Jupyter Notebook ***./transform/transform_outliers_part_1.ipynb*** for outlier detection.
+
+Open the Jupyter Notebook ***./transform/transform_outliers_part_2.ipynb*** for outlier removal.
+- Here are a couple of links to outlier detection processes and algorithms. S
+  - [scikit-learn novelty and outlier detection](scikit-learn.org/stable/modules/outlier_detection.html)
+  - [statistical and machine learning methods for outlier detection](https://towardsdatascience.com/a-brief-overview-of-outlier-detection-techniques-1e0b2c19e561)
+
+
+- How to detect Outliers?
+  - Use data visualization
+  - Statistical methods like z-scores or Tukey method (they use means stand deviations or quantiles)
+  - In higher dimensions clustering methods (determine the centroids of each cluster and calculate the distance of each cluster point from its centroid)
+
+
+- Tukey Role
+  - Find the first quartile Q1 (ie .25 quantile)
+  - Find the third quartile Q3 (ie .75 quantile)
+  - Calculate the inter-quartile range IQR (Q3 - Q1)
+  - Any value that is greater than Q3 + 1.5 * IQR is an outlier
+  - Any value that is less than Qe - 1.5 * IQR is an outlier
+
+  ```
+  def tukey_rule(data_frame, column_name):
+    """ use Tukey rule to detect outliers in a dataframe column, output a data_frame with the outliers eliminated
+
+       INPUT:
+       ------------
+       data_frame - DataFrame which has to be checked for outliers
+       column_name - column to focus on for outlier check
+
+       OUTPUT:
+       ------------
+       df_cleaned - DataFrame cleaned from outliers
+    """
+
+    # Calculate the first quartile of the population values
+    Q1 = data_frame[column_name].quantile(0.25)
+
+    # Calculate the third quartile of the population values
+    Q3 = data_frame[column_name].quantile(0.75)
+
+    # Calculate the interquartile range Q3 - Q1
+    IQR = Q3 - Q1
+
+    # Calculate the maximum value and minimum values according to the Tukey rule
+    # max_value is Q3 + 1.5 * IQR while min_value is Q1 - 1.5 * IQR
+    max_value = Q3 + 1.5 * IQR
+    min_value = Q1 - 1.5 * IQR
+
+    # Filter the column_name data values that are greater than max_value or less than min_value
+    df_cleaned = data_frame[(data_frame[column_name] < max_value) & (data_frame[column_name] > min_value)]
+
+    return df_cleaned
+  ```
+
+  ```
+  # Filter the population_2016 data for population values that are greater than max_value or less than min_value
+  gdp_outliers = gdp_2016[(gdp_2016['gdp'] > max_value) | (gdp_2016['gdp'] < min_value)]
+  ```
+  ```
+  # Find country names that are in both the population_outliers and the gdp_outliers
+  list(set(population_outliers['Country Name']).intersection(gdp_outliers['Country Name']))
+  ```
+  ```
+  # Find country names that are in the population outliers list but not the gdp outliers list
+  list(set(population_outliers['Country Name']) - set(gdp_outliers['Country Name']))
+  ```
+
+
 
 ## Setup Instructions
 
