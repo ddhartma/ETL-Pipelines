@@ -61,7 +61,7 @@ Read csv tricks:
   import pandas as pd
   df_projects = pd.read_csv('projects_data.csv')
   ```
-- In case of DType warning (Pandas could not automatically figure out the data type for each column (ie integer, string, etc.) use ```dtype=str```
+- In case of DType warning (Pandas could not automatically figure out the data type for each column (i.e. integer, string, etc.) use ```dtype=str```
 
   ```
   df_projects = pd.read_csv('projects_data.csv', dtype=str)
@@ -708,7 +708,6 @@ Open the Jupyter Notebook ***./load/putting_all_together.ipynb*** to see a compl
 
 
 ## Setup Instructions
-Open the Jupyter Notebook ***./load/load_data.ipynb*** for handling loading.
 The following is a brief set of instructions on setting up a cloned repository.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -733,7 +732,7 @@ $ export PATH="/path/to/anaconda/bin:$PATH"
 - Change Directory to your project older, e.g. `cd my_github_projects`
 - Clone the Github Project inside this folder with Git Bash (Terminal) via:
 ```
-$ git clone https://github.com/ddhartma/Data-Science-Web-Development.git
+$ git clone https://github.com/ddhartma/ETL-Pipelines.git
 ```
 
 - Change Directory
@@ -743,15 +742,13 @@ $ cd 5_ETL_DATA_Pipelines
 
 - Create a new Python environment, e.g. ds_etl. Inside Git Bash (Terminal) write:
 ```
-$ conda create --name ds_dashboard
+$ conda create --name ds_etl
 ```
 
 - Install the following packages (via pip or conda)
 ```
 numpy = 1.17.4
 pandas = 0.24.2
-plotly = 4.6.0
-Flask = 1.1.2
 ```
 
 - Check the environment installation via
@@ -759,7 +756,10 @@ Flask = 1.1.2
 $ conda env list
 ```
 
-- Activate the installed spotify_analysis environment via
+- Activate the installed environment via
 ```
-$ conda activate ds_dashboard
+$ conda activate ds_etl
 ```
+
+## Acknowledgments
+* This project is part of the Udacity Nanodegree program 'Data Science'. Please check this [link](https://www.udacity.com) for more information.
