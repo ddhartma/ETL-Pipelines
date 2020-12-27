@@ -1,59 +1,76 @@
 [image1]: normalize_data.png "normalize_data"
 [image2]: standardize_data.png "standardize_data"
+
 # ETL Pipelines
 Data comes in all shapes, formats and sizes. It's a data engineers job to make sure that all of this information is accessible and ready for analysis. One of the major responibilities of a data engineer is called ***pipelining***.
-## Introduction
+
+## The route
+This repo is structured in the following way:
+1. [Introduction](#Introduction)
+  - [ETL](#ETL)
+  - [ELT](#ELT)
+
+2. [The Data](#The_Data)
+
+3. [Extract data from different sources](#Extract_Data):
+  - [Typical formats](#Typical_formats)
+  - [Extracting Data from the Web](#Extracting_Data_from_the_Web)
+  - [Extracting CSV data](#Extracting_CSV_data)
+  - [Extracting JSON data](#Extracting_JSON_data)
+  - [Extracting XML data](#Extracting_XML_data)
+  - [Extracting SQL databases](#Extracting_SQL_databases)
+  - [Extracting data via APIs](#Extracting_data_via_APIs)
+
+4. [Transform Data](#Transform_Data)
+  - [Combinig data from different datasets](#Combinig_data)
+  - [Cleaning data](#Cleaning_data)
+  - [Datatypes](#Datatypes)
+  - [Parsing Dates](#Parsing_Dates)
+  - [Matching Encodings](#Matching_Encodings)
+  - [Missing values](#Missing_values)
+  - [Data Dublicates](#Data_Dublicates)
+  - [Dummy Variables](#Dummy_Variables)
+  - [Outliers](#Outliers)
+  - [Scaling](#Scaling)
+  - [Feature engineering](#Feature_engineering)
+
+5. [Load](#Load)
+
+6. [Putting it all together](#Putting_it_all_together)
+
+7. [Setup Instructions](#Setup_Instructions)
+  - [Prerequisites](#Prerequisites)
+  - [Clone the project](#Clone_the_project)
+
+## Introduction <a name="Introduction"></a>
 Data pipeline is a generic term for moving data from one place to another. For example, it could be moving data from one server to another server, database to database text file to csv file or text file to a database.
 
-#### ETL
+#### ETL <a name="ETL"></a>
 An ETL pipeline is a specific kind of data pipeline and very common. ETL stands for Extract, Transform, Load. Imagine that you have a database containing web log data. Each entry contains the IP address of a user, a timestamp, and the link that the user clicked.
 
-#### ELT
+#### ELT <a name="ELT"></a>
 ELT (Extract, Load, Transform) pipelines have gained traction since the advent of cloud computing. Cloud computing has lowered the cost of storing data and running queries on large, raw data sets. Many of these cloud services, like Amazon Redshift, Google BigQuery, or IBM Db2 can be queried using SQL or a SQL-like language. With these tools, the data gets extracted, then loaded directly, and finally transformed at the end of the pipeline.
 
 However, ETL pipelines are still used even with these cloud tools. Oftentimes, it still makes sense to run ETL pipelines and store data in a more readable or intuitive format. This can help data analysts and scientists work more efficiently as well as help an organization become more data driven.
 
-##### The route
-1. Extract data from different sources such as:
-  - csv files
-  - json files
-  - APIs
-2. Transform data
-  - combining data from different sources
-  - data cleaning
-  - data types
-  - parsing dates
-  - file encodings
-  - missing data
-  - duplicate data
-  - dummy variables
-  - remove outliers
-  - scaling features
-  - engineering features
-3. Load
-  - send the transformed data to a database
-4. ETL Pipeline
-  - code an ETL pipeline
-
-
-## The Data
+## The Data <a name="The_Data"></a>
 The data comes from two sources:
 - [World Bank Indicator Data](https://data.worldbank.org/indicator) - This data contains socio-economic indicators for countries around the world. A few example indicators include population, arable land, and central government debt.
 - [World Bank Project Data](https://datacatalog.worldbank.org/dataset/world-bank-projects-operations) - This data set contains information about World Bank project lending since 1947.
 
-## Extract Data
-#### Typical formats
+## Extract Data from different sources <a name="Extract_Data"></a>
+#### Typical formats <a name="Typical_formats"></a>
 - ***CSV***: CSV stands for comma-separated values. These types of files separate values with a comma, and each entry is on a separate line. Oftentimes, the first entry will contain variable names.
 - ***JSON***: JSON is a file format with key/value pairs. It looks like a Python dictionary.
 - ***XML***: XML stands for Extensible Markup Language. XML is very similar to HTML at least in terms of formatting. The main difference between the two is that HTML has pre-defined tags that are standardized. In XML, tags can be tailored to the data set.
 - ***SQL databases***: SQL databases store data in tables using primary and foreign keys.
 - ***Text Files***: Whereas CSV, JSON, XML, and SQL data are organized with a clear structure, text is more ambiguous.
 
-#### Extracting Data from the Web
+#### Extracting Data from the Web <a name="Extracting_Data_from_the_Web"></a>
 - Data from the web can often be extracted by using an API (Application Programming Interface).
 - APIs generally provide data in either JSON or XML format.
 
-### [Extracting CSV data](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html)
+### [Extracting CSV data](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html) <a name="Extracting_CSV_data"></a>
 Open the Jupyter Notebook ***./extract/extract_CSV.ipynb*** for csv handling.
 Read csv tricks:
 - read_csv simple:
@@ -83,7 +100,7 @@ Read csv tricks:
   ```
 
 
-### [Extracting JSON data](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html)
+### [Extracting JSON data](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html) <a name="Extracting_JSON_data"></a>
 Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for JSON handling.
 Read JSON tricks:
 - read JSON lines:
@@ -107,7 +124,7 @@ Read JSON tricks:
       json_data = json.load(f)
   ```
 
-### [Extracting XML data](https://www.crummy.com/software/BeautifulSoup/)
+### [Extracting XML data](https://www.crummy.com/software/BeautifulSoup/) <a name="Extracting_XML_data"></a>
 Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handling.
 - Use BeautifulSoup
   ```
@@ -148,7 +165,7 @@ Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handlin
   ```
 
 
-### Extracting SQL databases [SQLite](https://www.sqlite.org/about.html) or [SQL Alchemy](https://www.sqlalchemy.org/)
+### Extracting SQL databases [SQLite](https://www.sqlite.org/about.html) or [SQL Alchemy](https://www.sqlalchemy.org/) <a name="Extracting_SQL_databases"></a>
 Open the Jupyter Notebook ***./extract/extract_SQL.ipynb*** for SQL handling.
 - Connect to SQLite3 Database via
   ```
@@ -180,7 +197,7 @@ Open the Jupyter Notebook ***./extract/extract_SQL.ipynb*** for SQL handling.
   ```
   Check the note book for further queries.
 
-### Extracting data via APIs
+### Extracting data via APIs <a name="Extracting_data_via_APIs"></a>
 Open the Jupyter Notebook ***./extract/extract_API.ipynb*** for API handling.
 - An API allows one to execute code on the (World Bank) server without getting direct access.
 In general, you access APIs via the web using a web address. Within the web address, you specify the data that you want. To know how to format the web address, you need to read an API's documentation. Some APIs also require that you send login credentials as part of your request. The World Bank APIs are public and do not require login credentials.
@@ -207,7 +224,7 @@ In general, you access APIs via the web using a web address. Within the web addr
   ```
 
 
-## Transform Data
+## Transform Data <a name="Transform_Data"></a>
 - Data scientists claim that they spend 80% of their time transforming data.
 - Data Transformation means:
   - Combining & cleaning data
@@ -218,7 +235,7 @@ In general, you access APIs via the web using a web address. Within the web addr
   - Normalizing data
   - Engineer new features
 
-### Combinig data from different datasets
+### Combinig data from different datasets <a name="Combinig_data"></a>
 e.g. you have top combine data from a JSON file with data from a CSV file
 Open the Jupyter Notebook ***./transform/transform_comnbine.ipynb*** for DataFrame Combinations.
 
@@ -238,7 +255,7 @@ Open the Jupyter Notebook ***./transform/transform_comnbine.ipynb*** for DataFra
   df_merge = df_rural_melt.merge(df_electricity_melt, how='outer', on=['Country Name', 'Country Code', 'Year'])
   ```
 
-### Cleaning data
+### Cleaning data <a name="Cleaning_data"></a>
 Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cleaning.
 
 - Dirty data tends to come from a number of sources including:
@@ -275,7 +292,7 @@ Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cl
   ```
 
 
-### Datatypes
+### Datatypes <a name="Datatypes"></a>
 Open the Jupyter Notebook ***./transform/transform_datatypes.ipynb*** for handling datatypes.
 - When reading in a data set, pandas will try to guess the data type of each column like float, integer, datettime, bool, etc. In Pandas, strings are called "object" dtypes. However, Pandas does not always get this right.
 - With messy data, you might find it easier to read in everything as a string; however, you'll sometimes have to convert those strings to more appropriate data types. When you output the dtypes of a dataframe, you'll generally see these values in the results:
@@ -307,7 +324,7 @@ Open the Jupyter Notebook ***./transform/transform_datatypes.ipynb*** for handli
   - [to_numeric](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_numeric.html#pandas.to_numeric)
   - [to_timedelta](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.to_timedelta.html#pandas.to_timedelta)
 
-### Parsing Dates
+### Parsing Dates <a name="Parsing_Dates"></a>
 Open the Jupyter Notebook ***./transform/transform_parsing_dates.ipynb*** for parsing dates.
 - Another common data transformation involves parsing dates. Parsing generally means that you start with a string and then transform that string into a different data type. In this case, that means taking a date in the format of a string and transforming the string into a date type.
   ```
@@ -349,7 +366,7 @@ Open the Jupyter Notebook ***./transform/transform_parsing_dates.ipynb*** for pa
 - Check this link for [Python's strftime directives](https://strftime.org/)
 
 
-### Matching Encodings
+### Matching Encodings <a name="Matching_Encodings"></a>
 Open the Jupyter Notebook ***./transform/transform_encodings.ipynb*** for handling encodings.
 - Encodings are a set of rules mapping string characters to their binary representations. Python supports dozens of different encoding as seen here in this [link](https://docs.python.org/3/library/codecs.html#standard-encodings). Because the web was originally in English, the first encoding rules mapped binary code to the English alphabet.
 The English alphabet has only 26 letters. But other languages have many more characters including accents, tildes and umlauts. As time went on, more encodings were invented to deal with languages other than English. The utf-8 standard tries to provide a single encoding schema that can encompass all text.
@@ -371,7 +388,7 @@ The problem is that it's difficult to know what encoding rules were used to make
   df = pd.read_csv('../data/population_data.csv', skiprows=4, encoding=encoding['encoding'])
   ```
 
-### Missing values
+### Missing values <a name="Missing_values"></a>
 Open the Jupyter Notebook ***./transform/transform_imputations.ipynb*** for handling missing values.
 In most cases a machine learning algorithm won't work with missing values.
 
@@ -405,7 +422,7 @@ Common methods to handle missing values
   df_melt['GDP_bfill'] = df_melt.sort_values('year').groupby('Country Name')['GDP'].fillna(method='bfill')
   ```
 
-### Data Dublicates
+### Data Dublicates <a name="Data_Dublicates"></a>
 Open the Jupyter Notebook ***./transform/transform_dublicates.ipynb*** for handling dublicate values.
 - A data set might have duplicate data: in other words, the same record is represented multiple times. Sometimes, it's easy to find and eliminate duplicate data like when two records are exactly the same. At other times, duplicate data is hard to spot.
 - Drop duplicates via pandas [drop_dublicates](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html) method
@@ -417,7 +434,7 @@ Open the Jupyter Notebook ***./transform/transform_dublicates.ipynb*** for handl
   projects[projects['countryname'].str.contains('Yugoslavia')]
   ```
 
-### Dummy Variables
+### Dummy Variables <a name="Dummy_Variables"></a>
 Open the Jupyter Notebook ***./transform/transform_dummy.ipynb*** for creating dummy variables.
 - Dummy variables are often needed for categorical columns in order to make predictions via Linear Regression. The reasoning behind these transformations is that machine learning algorithms read in numbers not text. Text needs to be converted into numbers. If you have five categories, you only really need four features. For example, if the categories are "agriculture", "banking", "retail", "roads", and "government", then you only need four of those five categories for dummy variables. This topic is somewhat outside the scope of a data engineer.
 In some cases, you don't necessarily need to remove one of the features. It will depend on your application. In regression models, which use linear combinations of features, removing a dummy variable is important. For a decision tree, removing one of the variables is not needed.
@@ -434,7 +451,7 @@ In some cases, you don't necessarily need to remove one of the features. It will
   sector.loc[sector['sector1_aggregates'].str.contains('Transportation', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Transportation'
   ```
 
-### Outliers
+### Outliers <a name="Outliers"></a>
 Open the Jupyter Notebook ***./transform/transform_outliers_part_1.ipynb*** for outlier detection.
 
 Open the Jupyter Notebook ***./transform/transform_outliers_part_2.ipynb*** for outlier removal.
@@ -503,7 +520,7 @@ Open the Jupyter Notebook ***./transform/transform_outliers_part_2.ipynb*** for 
   list(set(population_outliers['Country Name']) - set(gdp_outliers['Country Name']))
   ```
 
-### Scaling
+### Scaling <a name="Scaling"></a>
 Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling scaling.
 
 - Numerical data comes in all different distribution patterns and ranges. However, some machine learning algorithms work better when all of the features are within a similar numerical range. Examples:
@@ -624,7 +641,7 @@ Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling
   ```
 
 
-### Feature engineering
+### Feature engineering <a name="Feature_engineering"></a>
 Open the Jupyter Notebook ***./transform/transform_feature_engineering.ipynb*** for handling scaling.
 - Engineering new features from dataset via
   - creating categorical variables from numerical variables
@@ -635,7 +652,7 @@ Open the Jupyter Notebook ***./transform/transform_feature_engineering.ipynb*** 
 
 - This is especially useful, when the model is underfitting
 
-## Load
+## Load <a name="Load"></a>
 Open the Jupyter Notebook ***./load/load.ipynb*** for handling loading.
 - After Transformation of data, data needs to be stored. There are many options one can choose from. Which to choose depends on the needs.
   - structural data -- a relational database like SQL might be good
@@ -703,16 +720,16 @@ Open the Jupyter Notebook ***./load/load.ipynb*** for handling loading.
   conn.commit()
   ```
 
-## Putting it all together
+## Putting it all together <a name="Putting_it_all_together"></a>
 Open the Jupyter Notebook ***./load/putting_all_together.ipynb*** to see a complete ETL workflow.
 
 
-## Setup Instructions
+## Setup Instructions <a name="Setup_Instructions"></a>
 The following is a brief set of instructions on setting up a cloned repository.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites: Installation of Python via Anaconda and Command Line Interaface
+### Prerequisites: Installation of Python via Anaconda and Command Line Interaface <a name="Prerequisites"></a>
 - Install [Anaconda](https://www.anaconda.com/distribution/). Install Python 3.7 - 64 Bit
 - If you need a good Command Line Interface (CLI) under Windowsa you could use [git](https://git-scm.com/). Under Mac OS use the pre-installed Terminal.
 
@@ -727,7 +744,7 @@ $ conda upgrade --all
 $ export PATH="/path/to/anaconda/bin:$PATH"
 ```
 
-### Clone the project
+### Clone the project <a name="Clone_the_project"></a>
 - Open your Command Line Interface
 - Change Directory to your project older, e.g. `cd my_github_projects`
 - Clone the Github Project inside this folder with Git Bash (Terminal) via:
@@ -761,5 +778,5 @@ $ conda env list
 $ conda activate ds_etl
 ```
 
-## Acknowledgments
+## Acknowledgments <a name="Introduction"></a>
 * This project is part of the Udacity Nanodegree program 'Data Science'. Please check this [link](https://www.udacity.com) for more information.
