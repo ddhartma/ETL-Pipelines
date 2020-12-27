@@ -431,6 +431,10 @@ Common methods to handle missing values
 ### Data Dublicates <a name="Data_Dublicates"></a>
 Open the Jupyter Notebook ***./transform/transform_dublicates.ipynb*** for handling dublicate values.
 - A data set might have duplicate data: in other words, the same record is represented multiple times. Sometimes, it's easy to find and eliminate duplicate data like when two records are exactly the same. At other times, duplicate data is hard to spot.
+- Count number of dublicate rows
+  ```
+  len(df)-len(df.drop_duplicates())
+  ```
 - Drop duplicates via pandas [drop_dublicates](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html) method
   ```
   df_indicator[['Country Name', 'Country Code']].drop_duplicates()
