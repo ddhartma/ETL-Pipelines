@@ -275,6 +275,12 @@ Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cl
   ```
   df_projects['countryname'].unique()
   ```
+
+- split column values in categories column and create a new DataFrame
+  ```
+  categories = df['categories'].str.split(';', expand=True) # split
+  ```
+
 - Apply a lambda function to all rows of one column for cleaning, e.g.
 
   split column values:
