@@ -371,7 +371,6 @@ Open the Jupyter Notebook ***./transform/transform_parsing_dates.ipynb*** for pa
 
 - Check this link for [Python's strftime directives](https://strftime.org/)
 
-
 ### Matching Encodings <a name="Matching_Encodings"></a>
 Open the Jupyter Notebook ***./transform/transform_encodings.ipynb*** for handling encodings.
 - Encodings are a set of rules mapping string characters to their binary representations. Python supports dozens of different encoding as seen here in this [link](https://docs.python.org/3/library/codecs.html#standard-encodings). Because the web was originally in English, the first encoding rules mapped binary code to the English alphabet.
@@ -406,10 +405,18 @@ Common methods to handle missing values
     - [transform](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.transform.html)
     - [fillna](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.fillna.html)
     ```
+    # impute missing values of given column by mean
     df_melt['GDP_filled'] = df_melt.groupby('Country Name')['GDP'].transform(lambda x: x.fillna(x.mean()))
+    or
+    # impute missing values of given column by mean
+    df_melt.GDP_filled.fillna(df_melt.GDP_filled.mean(),inplace=True)
     ```
 
   3. Imputing values by mode substitution
+    ```
+    # impute missing values of given column by mode
+    df_melt.GDP_filled.fillna(df_melt.GDP_filled.mode()[0],inplace=True)
+    ````
 
   4. Imputing values by median substitution
 
@@ -459,6 +466,20 @@ In some cases, you don't necessarily need to remove one of the features. It will
   ```
   sector.loc[sector['sector1_aggregates'].str.contains('Energy', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Energy'
   sector.loc[sector['sector1_aggregates'].str.contains('Transportation', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Transportation'
+  ```
+
+- One Hot Encoding via category_encoders
+  ```
+  import category_encoders as ce
+  # create an object of the OneHotEncoder
+  OHE = ce.OneHotEncoder(cols=['cat_col1',
+                               'cat_col2',
+                               'cat_col3',
+                               'cat_col4',
+                               'cat_col5',
+                               'cat_col6'], use_cat_names=True)
+  # encode the categorical variables
+  train_data = OHE.fit_transform(train_data)
   ```
 
 ### Outliers <a name="Outliers"></a>
@@ -649,6 +670,18 @@ Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling
             normalized.append((x[i] - x_min) / (x_max - x_min))
         return normalized
   ```
+
+- Rescaling via Standasrdscaler
+  ```
+  from sklearn.preprocessing import StandardScaler
+  # create an object of the StandardScaler
+  scaler = StandardScaler()
+  # fit with the col_1
+  scaler.fit(np.array(train_data.col_1).reshape(-1,1))
+  # transform the data
+  train_data.col_1 = scaler.transform(np.array(train_data.col_1).reshape(-1,1))
+  ```
+
 
 
 ### Feature engineering <a name="Feature_engineering"></a>
