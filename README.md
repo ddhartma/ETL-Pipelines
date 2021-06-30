@@ -416,7 +416,7 @@ Common methods to handle missing values
     ```
     # impute missing values of given column by mode
     df_melt.GDP_filled.fillna(df_melt.GDP_filled.mode()[0],inplace=True)
-    ````
+    ```
 
   4. Imputing values by median substitution
 
@@ -424,8 +424,8 @@ Common methods to handle missing values
 
   The pandas fillna method has a forward fill option. For example, if you wanted to use forward fill on the GDP dataset, you could execute ```df_melt['GDP'].fillna(method='ffill')```. However, there are two issues with that code.
 
-    - You want to first make sure the data is sorted by year
-    - You need to group the data by country name so that the forward fill stays within each country
+  - You want to first make sure the data is sorted by year
+  - You need to group the data by country name so that the forward fill stays within each country
 
   ```
   df_melt['GDP_ffill'] = df_melt.sort_values('year').groupby('Country Name')['GDP'].fillna(method='ffill')
