@@ -404,19 +404,19 @@ Common methods to handle missing values
     - [groupby](https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.groupby.html)
     - [transform](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.transform.html)
     - [fillna](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.fillna.html)
-    ```
-    # impute missing values of given column by mean
-    df_melt['GDP_filled'] = df_melt.groupby('Country Name')['GDP'].transform(lambda x: x.fillna(x.mean()))
-    or
-    # impute missing values of given column by mean
-    df_melt.GDP_filled.fillna(df_melt.GDP_filled.mean(),inplace=True)
-    ```
+  ```
+  # impute missing values of given column by mean
+  df_melt['GDP_filled'] = df_melt.groupby('Country Name')['GDP'].transform(lambda x: x.fillna(x.mean()))
+  or
+  # impute missing values of given column by mean
+  df_melt.GDP_filled.fillna(df_melt.GDP_filled.mean(),inplace=True)
+  ```
 
   3. Imputing values by mode substitution
-    ```
-    # impute missing values of given column by mode
-    df_melt.GDP_filled.fillna(df_melt.GDP_filled.mode()[0],inplace=True)
-    ```
+  ```
+  # impute missing values of given column by mode
+  df_melt.GDP_filled.fillna(df_melt.GDP_filled.mode()[0],inplace=True)
+  ```
 
   4. Imputing values by median substitution
 
