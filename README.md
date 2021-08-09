@@ -74,18 +74,18 @@ The data comes from two sources:
 Open the Jupyter Notebook ***./extract/extract_CSV.ipynb*** for csv handling.
 Read csv tricks:
 - read_csv simple:
-  ```
+  ```python
   import pandas as pd
   df_projects = pd.read_csv('projects_data.csv')
   ```
 - In case of DType warning (Pandas could not automatically figure out the data type for each column (i.e. integer, string, etc.) use ```dtype=str```
 
-  ```
+  ```python
   df_projects = pd.read_csv('projects_data.csv', dtype=str)
   ```
 
 - In case of ```ParserError: Error tokenizing data```:
-  ```
+  ```python
   f = open('population_data.csv')
   for i in range(10):
       line = f.readline()
@@ -95,7 +95,7 @@ Read csv tricks:
   - Read data line by line
   - use skiprow to overcome header problems in csv
 
-  ```
+  ```python
   df_population = pd.read_csv('population_data.csv', skiprows=4)
   ```
 
@@ -104,7 +104,7 @@ Read csv tricks:
 Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for JSON handling.
 Read JSON tricks:
 - read JSON lines:
-  ```
+  ```python
   def print_lines(n, file_name):
     f = open(file_name)
     for i in range(n):
@@ -114,11 +114,11 @@ Read JSON tricks:
   print_lines(1, 'population_data.json')
   ```
 - read JSON via pandas.read_json()
-  ```
+  ```python
   df_json = pd.read_json('population_data.json', orient='records')
   ```
 - read JSON via JSON library
-  ```
+  ```python
   import json
   with open('population_data.json') as f:
       json_data = json.load(f)
@@ -127,7 +127,7 @@ Read JSON tricks:
 ### [Extracting XML data](https://www.crummy.com/software/BeautifulSoup/) <a name="Extracting_XML_data"></a>
 Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handling.
 - Use BeautifulSoup
-  ```
+  ```python
   # import the BeautifulSoup library
   from bs4 import BeautifulSoup
 
@@ -135,7 +135,7 @@ Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handlin
   with open("population_data.xml") as fp:
       soup = BeautifulSoup(fp, "lxml") # lxml is the Parser type
   ```
-  ```
+  ```python
   # output the first 5 records in the xml file
   # this is an example of how to navigate the XML document with BeautifulSoup
 
@@ -152,7 +152,7 @@ Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handlin
   ```
 
 - Convert XML to DataFrame (via dictionary)
-  ```
+  ```python
   data_dictionary = {'Country or Area':[], 'Year':[], 'Item':[], 'Value':[]}
 
   for record in soup.find_all('record'):
@@ -168,7 +168,7 @@ Open the Jupyter Notebook ***./extract/extract_JSON_XML.ipynb*** for XML handlin
 ### Extracting SQL databases [SQLite](https://www.sqlite.org/about.html) or [SQL Alchemy](https://www.sqlalchemy.org/) <a name="Extracting_SQL_databases"></a>
 Open the Jupyter Notebook ***./extract/extract_SQL.ipynb*** for SQL handling.
 - Connect to SQLite3 Database via
-  ```
+  ```python
   import sqlite3
   import pandas as pd
 
@@ -180,7 +180,7 @@ Open the Jupyter Notebook ***./extract/extract_SQL.ipynb*** for SQL handling.
   ```
 
 - Connect to SQLAlchemy via
-  ```
+  ```python
   import pandas as pd
   from sqlalchemy import create_engine
 
@@ -214,7 +214,7 @@ In general, you access APIs via the web using a web address. Within the web addr
     and a few other options that you can read about [here](https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structure).
 
 - The Python requests library makes working with APIs relatively simple.
-  ```
+  ```python
   import requests
   import pandas as pd
 
@@ -241,17 +241,17 @@ Open the Jupyter Notebook ***./transform/transform_comnbine.ipynb*** for DataFra
 
 - Use the [concat](https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html) method to add df_electricity at the end of df_rural
 - Only possible if both DataFrames have the same column structure
-  ```
+  ```python
   df = pd.concat([df_rural, df_electricity])
   ```
 
 - Use the [melt](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html) method to unpivot a DataFrame from wide to long format, optionally leaving identifiers set.
-  ```
+  ```python
   df_rural_melt = pd.melt(df_rural, id_vars=['Country Name', 'Country Code', 'Indicator Name', 'Indicator Code'],\
                   var_name = 'Year', value_name='Rural_Value')
   ```
 - Use the [merge](https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.merge.html) method to join DataFrames
-  ```
+  ```python
   df_merge = df_rural_melt.merge(df_electricity_melt, how='outer', on=['Country Name', 'Country Code', 'Year'])
   ```
 
@@ -268,32 +268,32 @@ Open the Jupyter Notebook ***./transform/transform_cleaning.ipynb*** for Data Cl
 
 
 - Drop duplicates via pandas [drop_dublicates](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html) method
-  ```
+  ```python
   df_indicator[['Country Name', 'Country Code']].drop_duplicates()
   ```
 - Get unique column enntries of DataFrame via pandas [unique](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.unique.html) method
-  ```
+  ```python
   df_projects['countryname'].unique()
   ```
 
 - split column values in categories column and create a new DataFrame
-  ```
+  ```python
   categories = df['categories'].str.split(';', expand=True) # split
   ```
 
 - Apply a lambda function to all rows of one column for cleaning, e.g.
 
   split column values:
-  ```
+  ```python
   df_projects['Official Country Name'] = df_projects['countryname'].apply(lambda x : x.split(';')[0])
   ```
 
   replace colume values:
-  ```
+  ```python
   df_projects['totalamt'] = df_projects['totalamt'].apply(lambda x : x.replace(',', ''))
   ```
   or simply
-  ```
+  ```python
   df_projects['totalamt'] = df_projects['totalamt'].replace(',', '')
   ```
 
@@ -311,17 +311,17 @@ Open the Jupyter Notebook ***./transform/transform_datatypes.ipynb*** for handli
 
 
 - To get the datatypes of each column use
-  ```
+  ```python
   df_projects.dtypes
   ```
 
 - Conversion to string during reading
-  ```
+  ```python
   df_projects = pd.read_csv('../data/projects_data.csv', dtype=str)
   ```
 
 - Conversion to numeric values
-  ```
+  ```python
   df_projects['totalamt'] = pd.to_numeric(df_projects['totalamt'])
   ```
 - Important datatype converion methods
@@ -333,20 +333,20 @@ Open the Jupyter Notebook ***./transform/transform_datatypes.ipynb*** for handli
 ### Parsing Dates <a name="Parsing_Dates"></a>
 Open the Jupyter Notebook ***./transform/transform_parsing_dates.ipynb*** for parsing dates.
 - Another common data transformation involves parsing dates. Parsing generally means that you start with a string and then transform that string into a different data type. In this case, that means taking a date in the format of a string and transforming the string into a date type.
-  ```
+  ```python
   import pandas as pd
   parsed_date = pd.to_datetime('January 1st, 2017')
   ```
 
   In order to parse it use:
-  ```
+  ```python
   parsed_date.month
   parsed_date.year
   parsed_date.second
   ```
 
 - Sometimes date string are formatted in unexpected ways. For example, in the United States, dates are given with the month first and then the day. That is what pandas expects by default. However, some countries write the date with the day first and then the month.
-  ```
+  ```python
   parsed_date = pd.to_datetime('5/3/2017 5:30')
   parsed_date.month
 
@@ -358,7 +358,7 @@ Open the Jupyter Notebook ***./transform/transform_parsing_dates.ipynb*** for pa
   ```
 
 - Order to parse a whole DataFrame column use e.g.
-  ```
+  ```python
   df_projects['boardapprovaldate'] = pd.to_datetime(df_projects['boardapprovaldate'], format="%Y-%m-%dT%H:%M:%SZ")
   df_projects['boardapprovaldate'].dt.year
   df_projects['boardapprovaldate'].dt.month
@@ -378,7 +378,7 @@ The English alphabet has only 26 letters. But other languages have many more cha
 The problem is that it's difficult to know what encoding rules were used to make a file unless somebody tells you. The most common encoding by far is utf-8. Pandas will assume that files are utf-8 when you read them in or write them out.
 
 - Use chardet for autodetection of encodings
-  ```
+  ```python
   !pip install chardet
 
   # import the chardet library
@@ -404,16 +404,18 @@ Common methods to handle missing values
     - [groupby](https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.groupby.html)
     - [transform](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.transform.html)
     - [fillna](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.fillna.html)
-  ```
+  ```python
   # impute missing values of given column by mean
   df_melt['GDP_filled'] = df_melt.groupby('Country Name')['GDP'].transform(lambda x: x.fillna(x.mean()))
+  ```
   or
+  ```python
   # impute missing values of given column by mean
   df_melt.GDP_filled.fillna(df_melt.GDP_filled.mean(),inplace=True)
   ```
 
   3. Imputing values by mode substitution
-  ```
+  ```python
   # impute missing values of given column by mode
   df_melt.GDP_filled.fillna(df_melt.GDP_filled.mode()[0],inplace=True)
   ```
@@ -427,11 +429,11 @@ Common methods to handle missing values
   - You want to first make sure the data is sorted by year
   - You need to group the data by country name so that the forward fill stays within each country
 
-  ```
+  ```python
   df_melt['GDP_ffill'] = df_melt.sort_values('year').groupby('Country Name')['GDP'].fillna(method='ffill')
   ```
   6. Imputing values by [Backward Fill](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.DataFrame.fillna.html) (time series data), use neighboring cells to fill in the data
-  ```
+  ```python
   df_melt['GDP_bfill'] = df_melt.sort_values('year').groupby('Country Name')['GDP'].fillna(method='bfill')
   ```
 
@@ -439,15 +441,15 @@ Common methods to handle missing values
 Open the Jupyter Notebook ***./transform/transform_dublicates.ipynb*** for handling dublicate values.
 - A data set might have duplicate data: in other words, the same record is represented multiple times. Sometimes, it's easy to find and eliminate duplicate data like when two records are exactly the same. At other times, duplicate data is hard to spot.
 - Count number of dublicate rows
-  ```
+  ```python
   len(df)-len(df.drop_duplicates())
   ```
 - Drop duplicates via pandas [drop_dublicates](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop_duplicates.html) method
-  ```
+  ```python
   df_indicator[['Country Name', 'Country Code']].drop_duplicates()
   ```
 - Sometimes you have to look for certain strings in order to find dublicates, so use ```str.contains```
-  ```
+  ```python
   projects[projects['countryname'].str.contains('Yugoslavia')]
   ```
 
@@ -459,17 +461,17 @@ In some cases, you don't necessarily need to remove one of the features. It will
 - Pandas makes it relatively easy to create dummy variables; however, oftentimes you'll need to clean the data first. Use ```replace``` strings in columns or ```split``` to remove certain substrings from column-row. Create dummies for categorical subset. Add numerical columns via ```concat``` method for example.
 
 - Easy method in pandas [get_dummies](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.get_dummies.html)
-  ```
+  ```python
   dummies = pd.DataFrame(pd.get_dummies(sector['sector1']))
   ```
 - To reduce dimension of categorical subset it might be useful to combine a few of them together. For example, in the dataset there are various categories with the term "Energy". And then there are other categories that seem related to energy but don't have the word energy in them like "Thermal" and "Hydro". Some categories have the term "Renewable Energy", depending on your questions you might want to combine these sets to one category.
-  ```
+  ```python
   sector.loc[sector['sector1_aggregates'].str.contains('Energy', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Energy'
   sector.loc[sector['sector1_aggregates'].str.contains('Transportation', re.IGNORECASE).replace(np.nan, False),'sector1_aggregates'] = 'Transportation'
   ```
 
 - One Hot Encoding via category_encoders
-  ```
+  ```python
   import category_encoders as ce
   # create an object of the OneHotEncoder
   OHE = ce.OneHotEncoder(cols=['cat_col1',
@@ -504,7 +506,7 @@ Open the Jupyter Notebook ***./transform/transform_outliers_part_2.ipynb*** for 
   - Any value that is greater than Q3 + 1.5 * IQR is an outlier
   - Any value that is less than Qe - 1.5 * IQR is an outlier
 
-  ```
+  ```python
   def tukey_rule(data_frame, column_name):
     """ use Tukey rule to detect outliers in a dataframe column, output a data_frame with the outliers eliminated
 
@@ -538,15 +540,15 @@ Open the Jupyter Notebook ***./transform/transform_outliers_part_2.ipynb*** for 
     return df_cleaned
   ```
 
-  ```
+  ```python
   # Filter the population_2016 data for population values that are greater than max_value or less than min_value
   gdp_outliers = gdp_2016[(gdp_2016['gdp'] > max_value) | (gdp_2016['gdp'] < min_value)]
   ```
-  ```
+  ```python
   # Find country names that are in both the population_outliers and the gdp_outliers
   list(set(population_outliers['Country Name']).intersection(gdp_outliers['Country Name']))
   ```
-  ```
+  ```python
   # Find country names that are in the population outliers list but not the gdp outliers list
   list(set(population_outliers['Country Name']) - set(gdp_outliers['Country Name']))
   ```
@@ -570,7 +572,7 @@ Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling
     ![image2]
 
   Get min and max of an array
-  ```
+  ```python
   def x_min_max(data):
         """ Get min and max of an array
 
@@ -589,7 +591,7 @@ Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling
   ```
 
   Normalize data
-  ```
+  ```python
   def normalize(x, x_min, x_max):
     """ function that normalizes a data point
 
@@ -608,7 +610,7 @@ Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling
   ```
 
   Normalization class
-  ```
+  ```python
   class Normalizer():
     """ normalizer class receives a dataframe as its only input for initialization"""
 
@@ -672,7 +674,7 @@ Open the Jupyter Notebook ***./transform/transform_scaling.ipynb*** for handling
   ```
 
 - Rescaling via Standasrdscaler
-  ```
+  ```python
   from sklearn.preprocessing import StandardScaler
   # create an object of the StandardScaler
   scaler = StandardScaler()
@@ -709,22 +711,22 @@ Open the Jupyter Notebook ***./load/load.ipynb*** for handling loading.
   - [MongoDB](https://www.mongodb.com/)
 
 - Save to ***JSON***
-  ```
+  ```python
   # use orient='records' to get one of the more common json formats
   df_merged.to_json('countrydata.json', orient='records')
   ```
 - Save to ***CSV***
-  ```
+  ```python
   df_merged.to_csv('countrydata.csv', index=False)
   ```
 
 - Save to ***SQL***
-  ```
+  ```python
   df_merged.to_sql('merged', con = conn, if_exists='replace', index=False)
   ```
 
 - Some SQL coding (check the notebook for more info)
-  ```
+  ```python
   # connect to the data base
   conn = sqlite3.connect('worldbank.db')
 
@@ -752,7 +754,7 @@ Open the Jupyter Notebook ***./load/load.ipynb*** for handling loading.
   ```
 
 - To insert values into SQL table
-  ```
+  ```python
   # Insert gdp values into the gdp table
   for index, values in df_indicator[['countryname', 'countrycode', 'year', 'gdp']].iterrows():
       countryname, countrycode, year, gdp = values
